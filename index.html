@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" /> 
+    <title>Coding Quiz</title>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <a href="#highscores" id="highscores">View Highscores</a>
+        <div class="time">Time left: <span id="timeleft">0</span> sec</div>
+      </nav>
+    </header>
+
+    <hero><h1>Coding quiz</h1></hero>
+
+    <main>
+      <section  class="quiz-box">
+        <div class="question"></div>
+          <ul>
+            <li class="choices"><button id="answer1"></button></li>
+            <li class="choices"><button id="answer2"></button></li>
+            <li class="choices"><button id="answer3"></button></li>
+            <li class="choices"><button id="answer4"></button></li>
+          </ul>
+
+          <div class="score">Current Score: <span id="current-score">0</span></div>
+
+        </section>    
+
+      <button id="start-button">Start Quiz</button>
+
+      <section class="results">
+        <div>Your current score is: <span id="total-score">0</span></div>
+        <h2>Highscores</h2>
+        <ol id="highscores"></ol>
+      </section>
+
+  
+    </main>
+
+
+    <script src="script.js"></script>
+  </body>
+</html>
