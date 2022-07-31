@@ -12,27 +12,30 @@
 
 /*header */
 header {
-    display: inline-flex;
-    justify-content: center;
+    width: 100vw;
+}
+
+nav {
     margin-bottom: 30px;
     font-size: 30px;
     width: 100%;
 }
 
-.time {
-    position: relative;
-    float: right;
-    margin-left: 300px;
+nav li {
+    display: inline;
+    margin: 50px;
 }
+
 
 /*article*/
 article {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
 h1 {
-    font-size: 42px;
+    font-size: 50px;
+    text-shadow: 5px 5px 3px grey;
 }
 
 article p {

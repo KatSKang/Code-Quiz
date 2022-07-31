@@ -8,7 +8,7 @@ var questionBox = document.querySelector('.question');
 var choiceBox = document.querySelector('.choice-box');
 var quizBox = document.querySelector('.quiz-box');
 var resultsBox = document.querySelector('.results');
-var gameScore = document.getElementById('current-score');
+var gameScore = document.getElementById('live-score');
 var highScoreList = document.getElementById(HIGH_SCORES);
 
 var timer;
@@ -16,11 +16,12 @@ var timerCount = 60;
 
 var SCORE_POINTS = 0;
 var HIGH_SCORES = 'highScores';
+const NO_OF_HIGH_SCORES = 5;
 var highScoreString = localStorage.getItem(HIGH_SCORES);
 var highScores = JSON.parse(highScoreString) ?? [];
 
 var questionNumber = 0;
-var maxQuestions = 10;
+var maxQuestions = 9;
 var correctAnswer;
 var userAnswer;
 
@@ -169,9 +170,7 @@ function nextQuestion() {
 function checkAnswer() {
     if(userAnswer == correctAnswer) {
         console.log("Correct answer!");
-        SCORE_POINTS + 20;
-        gameScore.textContent = SCORE_POINTS;
-        localStorage.setItem("SCORE_POINTS", 20);
+        addScore();
     } else {
         console.log("Wrong answer!");
     }
@@ -181,32 +180,42 @@ function checkAnswer() {
 function startQuiz() {
     startbutton.style.visibility = "hidden";
     questionNumber = 0;
-    score = 0;
     countDown();
     nextQuestion();
     choiceBox.style.visibility = "visible";
 
 }
 
+function addScore() {
+    SCORE_POINTS = SCORE_POINTS + 100;
+    gameScore.textContent = SCORE_POINTS;
+}
+
 //shows current score and highscores
 function showResults() {
     resultsBox.style.display = "block";
-    saveScore()
+    saveNameScore();
+    showHighScores();
 }
 
 //ask user to save their score
-function saveScore() {
+function saveNameScore(SCORE_POINTS, highScores) {
     var name = prompt("Enter your name to save your score.");
-    var newScore = {score, name};
+        if(name === null) {
+            return;
+        }
+    var newScore = { SCORE_POINTS, name};
 
     highScores.push(newScore);
+    highScores.sort((a,b) => b.SCORE_POINTS - a.SCORE_POINTS);
+    highScores.splice(NO_OF_HIGH_SCORES);
     localStorage.setItem(HIGH_SCORES, JSON.stringify(highScores));
 }
 
 //retrieve scores from local storage and display in HTML list
 function showHighScores() {
     highScoreList.innerHTML = highScores
-    .map((score) => `<li>${score.score} - ${score.name}`).join('');
+    .map((SCORE_POINTS) => `<li>${SCORE_POINTS.SCORE_POINTS} - ${SCORE_POINTS.name}`).join('');
 }
 
 
