@@ -15,31 +15,34 @@
       </nav>
     </header>
 
-    <hero><h1>Coding quiz</h1></hero>
+    <article>
+      <h1>Coding quiz</h1>
+      <div class="score">
+        <p>Current Score: <span id="current-score">0</span></p>
+      </div>
+    </article>
 
     <main>
       <section  class="quiz-box">
-        <div class="question"></div>
-          <ul>
+        <div class="question center">Click on Start Quiz button to begin!</div>
+          <ul class="choice-box">
             <li class="choices"><button id="answer1"></button></li>
             <li class="choices"><button id="answer2"></button></li>
             <li class="choices"><button id="answer3"></button></li>
             <li class="choices"><button id="answer4"></button></li>
           </ul>
+        <div class="results">
+          <h2>Your current score is: <span id="total-score">0</span></h2>
+          <h3>Highscores</h3>
+          <ol id="highscores"></ol>
+        </div>
+      </section>    
 
-          <div class="score">Current Score: <span id="current-score">0</span></div>
+      <div class="start">
+        <button id="start-button">Start Quiz</button>
+      </div>
 
-        </section>    
 
-      <button id="start-button">Start Quiz</button>
-
-      <section class="results">
-        <div>Your current score is: <span id="total-score">0</span></div>
-        <h2>Highscores</h2>
-        <ol id="highscores"></ol>
-      </section>
-
-  
     </main>
 
 

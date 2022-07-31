@@ -5,15 +5,22 @@ var answer2 = document.getElementById('answer2');
 var answer3 = document.getElementById('answer3');
 var answer4 = document.getElementById('answer4');
 var questionBox = document.querySelector('.question');
-var choiceBox = document.querySelector('.choices');
+var choiceBox = document.querySelector('.choice-box');
 var quizBox = document.querySelector('.quiz-box');
 var resultsBox = document.querySelector('.results');
+var gameScore = document.getElementById('current-score');
+var highScoreList = document.getElementById(HIGH_SCORES);
 
 var timer;
 var timerCount = 60;
-var score = 0;
+
+var SCORE_POINTS = 0;
+var HIGH_SCORES = 'highScores';
+var highScoreString = localStorage.getItem(HIGH_SCORES);
+var highScores = JSON.parse(highScoreString) ?? [];
 
 var questionNumber = 0;
+var maxQuestions = 10;
 var correctAnswer;
 var userAnswer;
 
@@ -127,7 +134,7 @@ function countDown() {
         timerCount--;
         timeLeft.textContent = timerCount;
 
-    if (timerCount === 0 || questionNumber === questions.length) {
+    if (timerCount === 0 || questionNumber > maxQuestions) {
         clearInterval(timer);
         questionBox.style.display = "none";
         choiceBox.style.display = "none";
@@ -136,7 +143,7 @@ function countDown() {
     },1000);
 }
 
-//show questions
+//show questions from the array
 function displayQuestion() {
     questionBox.textContent = questions[questionNumber].question;
     answer1.textContent = questions[questionNumber].answers.a;
@@ -150,7 +157,7 @@ function displayQuestion() {
 function nextQuestion() {
     displayQuestion(questions[questionNumber]);
     questionNumber++;
-    if (questionNumber > questions.length) {
+    if (questionNumber > maxQuestions) {
         console.log("No more questions");
         questionBox.style.display = "none";
         choiceBox.style.display = "none";
@@ -162,16 +169,17 @@ function nextQuestion() {
 function checkAnswer() {
     if(userAnswer == correctAnswer) {
         console.log("Correct answer!");
-        score + 20;
+        SCORE_POINTS + 20;
+        gameScore.textContent = SCORE_POINTS;
+        localStorage.setItem("SCORE_POINTS", 20);
     } else {
         console.log("Wrong answer!");
     }
 }
 
-
+//starts the quiz
 function startQuiz() {
     startbutton.style.visibility = "hidden";
-    resultsBox.style.display = "none";
     questionNumber = 0;
     score = 0;
     countDown();
@@ -180,12 +188,30 @@ function startQuiz() {
 
 }
 
+//shows current score and highscores
 function showResults() {
     resultsBox.style.display = "block";
+    saveScore()
+}
 
+//ask user to save their score
+function saveScore() {
+    var name = prompt("Enter your name to save your score.");
+    var newScore = {score, name};
+
+    highScores.push(newScore);
+    localStorage.setItem(HIGH_SCORES, JSON.stringify(highScores));
+}
+
+//retrieve scores from local storage and display in HTML list
+function showHighScores() {
+    highScoreList.innerHTML = highScores
+    .map((score) => `<li>${score.score} - ${score.name}`).join('');
 }
 
 
+
+//Event listeners
 startbutton.addEventListener("click", startQuiz);
 
 //event listeners for answer choices
