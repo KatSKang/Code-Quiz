@@ -23,18 +23,27 @@ nav {
 
 nav li {
     display: inline;
-    margin: 50px;
+    margin-right: 150px;
+}
+
+#no-style {
+    background-color: black;
+    font-size: 30px;
+}
+
+#no-style:hover {
+    color:greenyellow;
 }
 
 
 /*article*/
 article {
-    margin-bottom: 30px;
+    margin-bottom: 5px;
     text-align: center;
 }
 
 h1 {
-    font-size: 50px;
+    font-size: 70px;
     text-shadow: 5px 5px 3px grey;
 }
 
@@ -53,7 +62,7 @@ article p {
     height: 40rem;
     margin: 0 auto;
     padding: 5px;
-    border: solid 1px grey;
+    border: dashed 1px grey;
 }
 
 /*questions*/
@@ -111,5 +120,6 @@ button:hover {
 
 /*results*/
 .results {
-    display: none;
+    visibility: hidden;
+    font-size: 25px;
 }

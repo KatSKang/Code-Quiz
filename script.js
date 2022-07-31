@@ -9,19 +9,21 @@ var choiceBox = document.querySelector('.choice-box');
 var quizBox = document.querySelector('.quiz-box');
 var resultsBox = document.querySelector('.results');
 var gameScore = document.getElementById('live-score');
-var highScoreList = document.getElementById(HIGH_SCORES);
+var highScoreList = document.getElementById('highscores');
+var viewScoreBtn = document.getElementById('score-view');
+var clearScores = document.getElementById('clear-score');
 
 var timer;
 var timerCount = 60;
 
 var SCORE_POINTS = 0;
 var HIGH_SCORES = 'highScores';
-const NO_OF_HIGH_SCORES = 5;
+var NO_OF_HIGH_SCORES = 5;
 var highScoreString = localStorage.getItem(HIGH_SCORES);
 var highScores = JSON.parse(highScoreString) ?? [];
 
 var questionNumber = 0;
-var maxQuestions = 9;
+var maxQuestions = 10;
 var correctAnswer;
 var userAnswer;
 
@@ -135,11 +137,15 @@ function countDown() {
         timerCount--;
         timeLeft.textContent = timerCount;
 
-    if (timerCount === 0 || questionNumber > maxQuestions) {
+    if (timerCount === 0) {
         clearInterval(timer);
         questionBox.style.display = "none";
         choiceBox.style.display = "none";
         showResults();
+    } else if (questionNumber === maxQuestions) {
+        clearInterval(timer);
+        questionBox.style.display = "none";
+        choiceBox.style.display = "none";
     }
     },1000);
 }
@@ -158,10 +164,8 @@ function displayQuestion() {
 function nextQuestion() {
     displayQuestion(questions[questionNumber]);
     questionNumber++;
-    if (questionNumber > maxQuestions) {
+    if (questionNumber === maxQuestions) {
         console.log("No more questions");
-        questionBox.style.display = "none";
-        choiceBox.style.display = "none";
         showResults();
     }
 }
@@ -193,22 +197,26 @@ function addScore() {
 
 //shows current score and highscores
 function showResults() {
-    resultsBox.style.display = "block";
+    resultsBox.style.visibility = "visible";
+    choiceBox.style.display = "none";
+    questionBox.style.display = "none";
     saveNameScore();
     showHighScores();
 }
 
+
 //ask user to save their score
 function saveNameScore(SCORE_POINTS, highScores) {
-    var name = prompt("Enter your name to save your score.");
-        if(name === null) {
-            return;
-        }
-    var newScore = { SCORE_POINTS, name};
+    var name = prompt("Enter name to save score.");
+    if(name === null) {
+        return;
+    }
 
-    highScores.push(newScore);
-    highScores.sort((a,b) => b.SCORE_POINTS - a.SCORE_POINTS);
-    highScores.splice(NO_OF_HIGH_SCORES);
+    var newScore = { SCORE_POINTS , name};
+    var testScore = [];
+    console.log(highScores);
+    testScore.push(newScore);
+    testScore.splice(NO_OF_HIGH_SCORES);
     localStorage.setItem(HIGH_SCORES, JSON.stringify(highScores));
 }
 
@@ -218,10 +226,19 @@ function showHighScores() {
     .map((SCORE_POINTS) => `<li>${SCORE_POINTS.SCORE_POINTS} - ${SCORE_POINTS.name}`).join('');
 }
 
+//clear highscores
+function clearHighScores() {
+    localStorage.clear();
+    showHighScores();
+}
+
 
 
 //Event listeners
 startbutton.addEventListener("click", startQuiz);
+viewScoreBtn.addEventListener("click", showResults);
+clearScores.addEventListener("click", clearHighScores);
+
 
 //event listeners for answer choices
 answer1.addEventListener("click", function(event) {
