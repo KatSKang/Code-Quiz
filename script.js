@@ -230,6 +230,7 @@ function saveNameScore(SCORE_POINTS, highScores) {
 function showHighScores() {
     highScoreList.innerHTML = highScores
     .map((SCORE_POINTS) => `<li>${SCORE_POINTS.SCORE_POINTS} - ${SCORE_POINTS.name}`).join('');
+    clearInterval(timer);
 }
 
 //clear highscores
