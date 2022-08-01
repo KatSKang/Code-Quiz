@@ -44,7 +44,7 @@ article {
 
 h1 {
     font-size: 70px;
-    text-shadow: 5px 5px 3px grey;
+    text-shadow: 5px 5px 5px grey;
 }
 
 article p {
@@ -120,6 +120,10 @@ button:hover {
 
 /*results*/
 .results {
-    visibility: hidden;
-    font-size: 25px;
+    display: none;
+    font-size: 35px;
+    text-align: center;
+    padding: 20px;
 }
+
+

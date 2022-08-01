@@ -1,5 +1,5 @@
 var timeLeft = document.getElementById('timeleft');
-var startbutton = document.getElementById('start-button');
+var startButton = document.getElementById('start-button');
 var answer1 = document.getElementById('answer1');
 var answer2 = document.getElementById('answer2');
 var answer3 = document.getElementById('answer3');
@@ -12,6 +12,7 @@ var gameScore = document.getElementById('live-score');
 var highScoreList = document.getElementById('highscores');
 var viewScoreBtn = document.getElementById('score-view');
 var clearScores = document.getElementById('clear-score');
+var tryAgainBtn = document.getElementById('try-again');
 
 var timer;
 var timerCount = 60;
@@ -139,13 +140,10 @@ function countDown() {
 
     if (timerCount === 0) {
         clearInterval(timer);
-        questionBox.style.display = "none";
-        choiceBox.style.display = "none";
         showResults();
     } else if (questionNumber === maxQuestions) {
         clearInterval(timer);
-        questionBox.style.display = "none";
-        choiceBox.style.display = "none";
+        showResults();
     }
     },1000);
 }
@@ -166,30 +164,39 @@ function nextQuestion() {
     questionNumber++;
     if (questionNumber === maxQuestions) {
         console.log("No more questions");
+        saveNameScore(SCORE_POINTS, highScores);
         showResults();
     }
 }
 
-//check the answer is correct and increase score
+//starts the quiz
+function startQuiz() {
+    startButton.style.visibility = "hidden";
+    questionNumber = 0;
+    timer = 0;
+    countDown();
+    nextQuestion();
+    choiceBox.style.visibility = "visible";
+    questionBox.style.visibility = "visible";
+}
+
+//refreshes page
+function playAgain() {
+    location.reload();
+}
+
+//check the answer is correct and increase score or subtract 5 sec if wrong
 function checkAnswer() {
     if(userAnswer == correctAnswer) {
         console.log("Correct answer!");
         addScore();
     } else {
         console.log("Wrong answer!");
+        timerCount -=5;
     }
 }
 
-//starts the quiz
-function startQuiz() {
-    startbutton.style.visibility = "hidden";
-    questionNumber = 0;
-    countDown();
-    nextQuestion();
-    choiceBox.style.visibility = "visible";
-
-}
-
+//adds score points and prints to page
 function addScore() {
     SCORE_POINTS = SCORE_POINTS + 100;
     gameScore.textContent = SCORE_POINTS;
@@ -197,15 +204,14 @@ function addScore() {
 
 //shows current score and highscores
 function showResults() {
-    resultsBox.style.visibility = "visible";
+    resultsBox.style.display = "block";
     choiceBox.style.display = "none";
     questionBox.style.display = "none";
-    saveNameScore();
+    startButton.style.visibility = "hidden";
     showHighScores();
 }
 
-
-//ask user to save their score
+//ask user to enter name and save their score; saved as an object in a new variable
 function saveNameScore(SCORE_POINTS, highScores) {
     var name = prompt("Enter name to save score.");
     if(name === null) {
@@ -213,14 +219,14 @@ function saveNameScore(SCORE_POINTS, highScores) {
     }
 
     var newScore = { SCORE_POINTS , name};
-    var testScore = [];
     console.log(highScores);
-    testScore.push(newScore);
-    testScore.splice(NO_OF_HIGH_SCORES);
+    highScores.push(newScore);  
+    highScores.sort((a,b) => b.SCORE_POINTS - a.SCORE_POINTS);
+    highScores.splice(NO_OF_HIGH_SCORES);
     localStorage.setItem(HIGH_SCORES, JSON.stringify(highScores));
 }
 
-//retrieve scores from local storage and display in HTML list
+//retrieve scores from local storage and display in HTML as a numbered list
 function showHighScores() {
     highScoreList.innerHTML = highScores
     .map((SCORE_POINTS) => `<li>${SCORE_POINTS.SCORE_POINTS} - ${SCORE_POINTS.name}`).join('');
@@ -233,11 +239,11 @@ function clearHighScores() {
 }
 
 
-
 //Event listeners
-startbutton.addEventListener("click", startQuiz);
+startButton.addEventListener("click", startQuiz);
 viewScoreBtn.addEventListener("click", showResults);
 clearScores.addEventListener("click", clearHighScores);
+tryAgainBtn.addEventListener("click", playAgain);
 
 
 //event listeners for answer choices
